@@ -63,7 +63,6 @@ public class TeacherSubjectDao {
 		if(cntRs.next()) {
 			totalRow = cntRs.getInt("count(*)");
 		}
-		
 		return totalRow;
 	}
 	

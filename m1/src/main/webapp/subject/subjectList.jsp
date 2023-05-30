@@ -5,6 +5,10 @@
 <%
 	SubjectDao subjectDao = new SubjectDao();
 	ArrayList<Subject> subjectList = subjectDao.selectSubjectListByPage(0, 10);//0부터 10까지
+	
+	/* 인코딩 */
+	response.setCharacterEncoding("utf-8");
+	String msg = null;
 %>
 <!DOCTYPE html>
 <html>
@@ -22,14 +26,25 @@
 </head>
 <body>
 	<div><!-- Navigation-->
-	  	<ul class="nav nav-tabs">	
+	  	<ul class="nav nav-tabs">
+             <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/teacherSubjectList.jsp">tsList</a></li>
              <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/subject/subjectList.jsp">subjectList</a></li>
-             <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/">2</a></li>
              <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/">3</a></li>
          </ul>
     </div>
      <div class="container mt-3" class="center">
 	<table class="table table-bordered table-sm">
+		<tr>
+			<td colspan="5">
+					<%
+						if(request.getParameter("msg") != null){
+					%>
+							<%=request.getParameter("msg")%>
+					<%
+						}
+					%>
+				</td>
+			</tr>
 		<tr>
 			<td colspan="5" class="table-danger"><h4>과목목록 조회</h4></td>
 		</tr>
@@ -40,7 +55,7 @@
 			<th>생성일</th>
 			<th>수정일</th>
 		</tr>
-			<% //Board 클래스의 객체 b를 one만큼 반복.
+			<%
 				for(Subject subject : subjectList){
 			%>
 			<tr>
@@ -53,6 +68,11 @@
 			<%
 				}
 			%>
+			<tr class="center">
+			<td colspan="5">
+			<button type="button" class="btn btn-outline-secondary"><a href="<%=request.getContextPath()%>/subject/addSubject.jsp">추가</a></button>
+			</td>
+		</tr>
 	</table>
 	</div>
 </body>

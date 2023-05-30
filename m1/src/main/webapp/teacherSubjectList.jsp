@@ -51,9 +51,9 @@
 <body>
 	<div><!-- Navigation-->
 	  	<ul class="nav nav-tabs">
-             <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/teacherSubjectList.jsp">tsList</a></li>
-         	 <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/subject/subjectList.jsp">subjectList</a></li>
-         	 <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/">3</a></li>
+             <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/teacherSubjectList.jsp">강사별 담당과목</a></li>
+         	 <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/subject/subjectList.jsp">과목 리스트</a></li>
+         	 <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/teacher/teacherList.jsp">강사 리스트</a></li>
          </ul>
     </div>
     

@@ -10,8 +10,10 @@ public class SubjectDao {
 		ArrayList<Subject> list = new ArrayList<>();
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
-		String sql = "select subject_no, subject_name, subject_time, createdate, updatedate from subject";
+		String sql = "select subject_no, subject_name, subject_time, createdate, updatedate from subject ORDER BY subject_no limit ?, ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, beginRow);
+		stmt.setInt(2, rowPerPage);
 		System.out.println("subjectDao - SQL: " + sql);
 		ResultSet rs = stmt.executeQuery();
 		//vo타입으로 변경
@@ -28,31 +30,36 @@ public class SubjectDao {
 	}
 	// 2) 과목추가
 	public int insertSubject(Subject subject) throws Exception {
-		int row = 0;
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
-		String insertSql = "INSERT INTO subject(subject_no, subject_name, subject_time, createdate, updatedate) values(?, ?, ?, NOW(), NOW())";
+		String insertSql = "INSERT INTO subject(subject_name, subject_time, createdate, updatedate) values(?, ?, NOW(), NOW())";
 		PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+		insertStmt.setString(1, subject.getSubjectName());
+		insertStmt.setInt(2, subject.getSubjectTime());
+		int row = insertStmt.executeUpdate();
 		System.out.println("subjectDao - insertSql: " + insertSql);
 		return row;
 	}
 	// 3) 과목삭제
 	public int deleteSubject(int subjectNo) throws Exception {
-		int row = 0;
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
-		String deleteSql = "DELETE ";
+		String deleteSql = "DELETE FROM subject WHERE subject_no = ?";
 		PreparedStatement deleteStmt = conn.prepareStatement(deleteSql);
+		deleteStmt.setInt(1, subjectNo);
+		int row = deleteStmt.executeUpdate();
 		System.out.println("subjectDao - deleteSql: " + deleteSql);
 		return row;
 	}
 	// 4) 과목수정
 	public int updateSubject(Subject subject) throws Exception {
-		int row = 0;
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
-		String updateSql = "";
+		String updateSql = "UPDATE subject SET subject_name=?, subject_time=?, updatedate=NOW()";
 		PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+		updateStmt.setString(1, subject.getSubjectName());
+		updateStmt.setInt(2, subject.getSubjectTime());
+		int row = updateStmt.executeUpdate();
 		return row;
 	}
 	
@@ -75,14 +82,18 @@ public class SubjectDao {
 		}
 		return subject;
 	}
-	// 6) 과목전체row
+	// 6) 과목전체row 페이징
 	public int selectSubjectCnt() throws Exception {
 		int row = 0;
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
-		String allSql = "";
-		PreparedStatement allStmt = conn.prepareStatement(allSql);
-		ResultSet oneRs = allStmt.executeQuery();
+		String cntSql = "SELECT count(*) count FROM subject";
+		PreparedStatement cntStmt = conn.prepareStatement(cntSql);
+		ResultSet cntRs = cntStmt.executeQuery();
+		// count 값을 vo타입으로 변환
+		if(cntRs.next()) {
+			row = cntRs.getInt("count");
+		}
 		return row;
 	}
 }
